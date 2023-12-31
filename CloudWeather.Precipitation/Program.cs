@@ -1,3 +1,4 @@
+using CloudWeather.Precipitation.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +23,18 @@ app.MapGet("/observation/{zip}", async (string zip, [FromQuery] int? days, Preci
     }
     
     var startDate = DateTime.UtcNow - TimeSpan.FromDays(days.Value);
-
-    PrecipDBContext context = new PrecipDBContext();
     var result = await db.Precipitation
         .Where(precip => precip.ZipCode == zip && precip.CreatedOn > startDate)
         .ToListAsync();
     
     return Results.Ok(result);
+});
+
+app.MapPost("/observation", async (Precipitation precip, PrecipDBContext db) =>
+{
+    precip.CreatedOn = precip.CreatedOn.ToUniversalTime();
+    await db.AddAsync(precip);
+    await db.SaveChangesAsync();
 });
 
 app.Run();

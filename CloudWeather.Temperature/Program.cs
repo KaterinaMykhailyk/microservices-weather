@@ -1,3 +1,5 @@
+using CloudWeather.Temperature.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,5 +14,27 @@ builder.Services.AddDbContext<TemperatureDBContext>(
 );
 
 var app = builder.Build();
+
+app.MapGet("/temperature/{zip}", async (string zip, [FromQuery] int? days, TemperatureDBContext db) =>
+{
+    if (days == null || days < 0 || days > 30)
+    {
+        return Results.BadRequest("Please provide a 'days' query parameter between 1 and 30");
+    }
+    
+    var startDate = DateTime.UtcNow - TimeSpan.FromDays(days.Value);
+    var result = await db.Temperature
+        .Where(precip => precip.ZipCode == zip && precip.CreatedOn > startDate)
+        .ToListAsync();
+    
+    return Results.Ok(result);
+});
+
+app.MapPost("/observation", async (Temperature temperature, TemperatureDBContext db) =>
+{
+    temperature.CreatedOn = temperature.CreatedOn.ToUniversalTime();
+    await db.AddAsync(temperature);
+    await db.SaveChangesAsync();
+});
 
 app.Run();
