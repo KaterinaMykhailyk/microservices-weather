@@ -1,5 +1,4 @@
 namespace CloudWeather.Report.Entities;
-
 public class WeatherReport 
 {
     public Guid Id { get; set; }

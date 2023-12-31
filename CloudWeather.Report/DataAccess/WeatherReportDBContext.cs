@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 public class WeatherReportDBContext : DbContext
 {
     public WeatherReportDBContext() {}
-
     public WeatherReportDBContext(DbContextOptions opts) : base(opts) {}
     
     public DbSet<WeatherReport> WeatherReports { get; set; }
