@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CloudWeather.Precipitation.Entities;
+
 public class PrecipDBContext : DbContext
 {
     public PrecipDBContext() {}

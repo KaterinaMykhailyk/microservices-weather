@@ -1,4 +1,5 @@
 namespace CloudWeather.Precipitation.Entities;
+
 public class Precipitation
 {
     public Guid Id { get; set; }
