@@ -115,8 +115,8 @@ public class WeatherReportAggregator : IWeatherReportAggregator
     {
         var tempServiceProtocol = _weatherDataConfig.TempDataProtocol;
         var tempServiceHost = _weatherDataConfig.TempDataHost;
-        var tempServicePort = _weatherDataConfig.TempDataHost;
-        return $"{tempServiceProtocol}://{tempServiceHost}:{tempServicePort}/observation/{zip}?days={days}";
+        var tempServicePort = _weatherDataConfig.TempDataPort;
+        return $"{tempServiceProtocol}://{tempServiceHost}:{tempServicePort}/temperature/{zip}?days={days}";
     }
     
     private string BuildPrecipitationServiceEndpoint(string zip, int days)
